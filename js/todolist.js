@@ -1,22 +1,11 @@
-// Definición de la interfaz Tarea
-interface Tarea {
-  titulo: string;
-  id: number;
-  descripcion: string;
-  estado: string;
-  creacion: Date;
-  edicion: Date | null;
-  vencimiento: Date;
-  dificultad: string;
-}
 // =======================
 // Menú Principal en Node.js
 // =======================
 
-const { input, close } = require("./lib/nodeImperativo");
+const { input, close } = require("../lib/nodeImperativo");
 
 // Lista de tareas en memoria
-let tareas:Tarea [] = [];
+let tareas = [];
 
 // Función para mostrar el menú
 function mostrarMenu() {
@@ -44,26 +33,26 @@ async function verPorEstado() {
   switch (menuEstado) {
     case "1":
       tareas.forEach(tarea => {
-        if (tarea.estado = "En Curso")
+        if (tarea.estado === "En Curso")
           console.log(tarea);
       });
       break;
     case "2":
       tareas.forEach(tarea => {
-        if (tarea.estado = "Pendiente")
+        if (tarea.estado === "Pendiente")
           console.log(tarea);
       })
       break;
     case "3":
       tareas.forEach(tarea => {
-        if (tarea.estado = "Terminada")
+        if (tarea.estado === "Terminada")
           console.log(tarea);
       })
       break;
     case "4":
       tareas.forEach(tarea => {
-        if (tarea.estado = "Cancelada")
-          console.log(tarea);
+        if (tarea.estado === "Cancelada")
+          console.log(tarea)
       })
       break;
     case "0":
@@ -173,11 +162,9 @@ async function buscarTarea() {
 }
 async function buscarNombre() {
   let buscarNom = await input("Buscar...");
-  let encontrada =false;
   tareas.forEach(tarea => {
     if (tarea.titulo.toLowerCase().includes(buscarNom.toLowerCase())) {
       console.log(tarea);
-      
       encontrada = true;
     }
   })
@@ -256,7 +243,7 @@ async function newtarea() {
       break;
   }
   console.log("dificultadMenu--->", dificultadMenu)
-  let nuevaTarea = {
+  let t = {
     titulo: newtitulo,
     id: newid,
     descripcion: newdescripcion,
@@ -266,6 +253,12 @@ async function newtarea() {
     vencimiento: new Date(newvencimiento),
     dificultad: newdificultad,
   };
+  console.log("t------>", t)
+  tareas.push(
+    t
+  )
+
+
   return
 }
 console.log("tareas->", tareas)
@@ -286,7 +279,7 @@ async function editarTarea() {
     let nuevadescripcion = (await input("Descripcion\n")).trim();
     if (nuevadescripcion !== "") tarea.descripcion = nuevadescripcion;
 
-    let nuevoEstado: string = "Pendiente";
+    let nuevoEstado
     console.log("\nElija un estado para su tarea (por defecto Pendiente)\n");
     let estadoEdit = await input("\n[1]En Curso \n[2]Pendiente \n[3]Terminada \n[4]Cancelada\n");
     if (estadoEdit !== "1" && estadoEdit !== "2" && estadoEdit !== "3" && estadoEdit !== "4") {
@@ -304,7 +297,7 @@ async function editarTarea() {
         break;
       case "4":
         nuevoEstado = "Cancelada";
-        break;
+        break
     }
     tarea.estado = nuevoEstado;
     tarea.edicion = new Date();

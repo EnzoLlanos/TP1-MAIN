@@ -1,8 +1,9 @@
 // =======================
 // Programa principal
 // =======================
+export {};
 //Importamos desde la librería
-const { input, close } = require("./lib/nodeImperativo");
+const { input, close } = require("../lib/nodeImperativo");
 
 // Función principal 
 let num1:number[]=[];
