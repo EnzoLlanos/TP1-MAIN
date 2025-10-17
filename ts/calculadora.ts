@@ -3,7 +3,8 @@
 // =======================
 export {};
 //Importamos desde la librería
-const { input, close } = require("../lib/nodeImperativo");
+//@ts-ignore
+import { input, close } from "../lib/nodeImperativo.js";
 
 // Función principal 
 let num1:number[]=[];

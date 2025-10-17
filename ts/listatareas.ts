@@ -1,3 +1,4 @@
+
 // Definición de la interfaz Tarea
 interface Tarea {
   titulo: string;
@@ -13,7 +14,10 @@ interface Tarea {
 // Menú Principal en Node.js
 // =======================
 export {};
-const { input, close } = require("./lib/nodeImperativo");
+// Importar las utilidades desde el módulo ESM
+// @ts-ignore
+import { input, close } from "../lib/nodeImperativo.js";
+
 
 // Lista de tareas en memoria
 let tareas:Tarea [] = [];
@@ -25,6 +29,7 @@ function mostrarMenu() {
   console.log("[1] Ver Mis Tareas.");
   console.log("[2] Buscar una Tarea.");
   console.log("[3] Agregar una Tarea.");
+  console.log("[4] Editar una Tarea.");
   console.log("[0] Salir.");
 }
 async function verPorEstado() {
@@ -44,25 +49,25 @@ async function verPorEstado() {
   switch (menuEstado) {
     case "1":
       tareas.forEach(tarea => {
-        if (tarea.estado = "En Curso")
+        if (tarea.estado === "En Curso")
           console.log(tarea);
       });
       break;
     case "2":
       tareas.forEach(tarea => {
-        if (tarea.estado = "Pendiente")
+        if (tarea.estado === "Pendiente")
           console.log(tarea);
       })
       break;
     case "3":
       tareas.forEach(tarea => {
-        if (tarea.estado = "Terminada")
+        if (tarea.estado === "Terminada")
           console.log(tarea);
       })
       break;
     case "4":
       tareas.forEach(tarea => {
-        if (tarea.estado = "Cancelada")
+        if (tarea.estado === "Cancelada")
           console.log(tarea);
       })
       break;
@@ -129,7 +134,7 @@ async function vertareas() {
     console.log("[4] Ver tareas caducadas");
     console.log("[0] Volver");
     menuVerTareas = await input("<")
-  } while (!menuVerTareas || !["1", "2", "3", "4", "5"].includes(menuVerTareas.trim()))
+  } while (!menuVerTareas || !["1", "2", "3", "4", "0"].includes(menuVerTareas.trim()))
   switch (menuVerTareas) {
     case "1":
       console.log("\nTodas las tareas:");
@@ -146,7 +151,7 @@ async function vertareas() {
     case "4":
       await verCaducadas();
       break;
-    case "5":
+    case "0":
       return;
   }
 
@@ -159,7 +164,7 @@ async function buscarTarea() {
     console.log("[2] Buscar por ID");
     console.log("[0] Volver");
     menubuscar = await input("<");
-  } while (!menubuscar || !["1", "2", "3"].includes(menubuscar.trim()))
+  } while (!menubuscar || !["1", "2", "3","0"].includes(menubuscar.trim()))
   switch (menubuscar) {
     case "1":
       await buscarNombre();
@@ -188,11 +193,15 @@ async function buscarNombre() {
 
 async function buscarId() {
   let buscarPorID = await input("Buscar...");
+  let encontrada =false;
   tareas.forEach(tarea => {
     if (tarea.id === Number(buscarPorID)) {
       console.log(tarea);
     }
   })
+  if (!encontrada) {
+    console.log("❌❌ No se encontro ninguna tarea que coincida ❌❌");
+  }
 }
 
 async function newtarea() {
@@ -207,7 +216,7 @@ async function newtarea() {
   let newdescripcion = await input("\nIngrese una descripcion para su tarea\n");
 
   console.log("\nElija un estado para su tarea (por defecto Pendiente)");
-  let newestado;
+  let newestado: string = "Pendiente";
   let estado = await input("\n[1]En Curso \n[2]Pendiente \n[3]Terminada \n[4]Cancelada\n");
   if (estado !== "1" && estado !== "2" && estado !== "3" && estado !== "4") {
     estado = "2";
@@ -237,7 +246,6 @@ async function newtarea() {
   console.log("\nIngrese una dificultad para la tarea (por defecto facil)");
   let newdificultad;
   let dificultadMenu = await input("\n[1]Facil \n[2]Medio \n[3]Dificil\n");
-  console.log(typeof dificultadMenu)
   if (dificultadMenu !== "1" && dificultadMenu !== "2" && dificultadMenu !== "3") {
     dificultadMenu = "1"
   }
@@ -255,7 +263,7 @@ async function newtarea() {
       newdificultad = "Facil";
       break;
   }
-  console.log("dificultadMenu--->", dificultadMenu)
+  
   let nuevaTarea = {
     titulo: newtitulo,
     id: newid,
@@ -266,13 +274,15 @@ async function newtarea() {
     vencimiento: new Date(newvencimiento),
     dificultad: newdificultad,
   };
+  tareas.push(nuevaTarea);
   return
 }
-console.log("tareas->", tareas)
+
 async function editarTarea() {
 
   console.log("Para Editar una tarea ingrese el ID de la misma\n");
-  let editarPorid = await input("ID...\n");
+  let editarPoridRaw = await input("ID...\n");
+  let editarPorid = Number(editarPoridRaw);
   for (let tarea of tareas) {
     if (tarea.id === editarPorid)
       console.log(tarea);
