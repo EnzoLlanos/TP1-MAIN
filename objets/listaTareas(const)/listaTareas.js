@@ -108,13 +108,13 @@ const tareas={
                         });
                         break;
                     case"2":
-                        verPorEstado();
+                        this.verPorEstado();
                         break;
                     case"3":
-                        verPorDificultad();
+                        this.verPorDificultad();
                         break;
                     case"4":
-                        verPorvencim();
+                        this.verPorvencim();
                         break;
                     case"0":
                         return;
@@ -203,25 +203,6 @@ const tareas={
                 });
         },
     //Buscar Tarea
-        buscarTarea: async function(){
-            let menuBuscar;
-            do{
-                console.log("Elija una opcion de busqueda");
-                console.log("[1] Por Titulo");
-                console.log("[2] Por ID");
-                console.log("[0] Volver");
-            }while(!menuBuscar||!["1","2","0"].includes(menuBuscar.trim()))
-            switch(menuBuscar){
-                case"1":
-                        buscarPorTitulo();
-                    break;
-                case"2":
-                        buscarPorID();
-                    break;
-                case"0":
-                    return;
-            }
-        },
         buscarPorTitulo: async function(){
             let buscarTitulo;
             console.log("Ingrese el titulo a buscar");
@@ -247,6 +228,28 @@ const tareas={
                 }
             })
         },
+        buscarTarea: async function(){
+            let menuBuscar;
+            do{
+                console.log("Elija una opcion de busqueda");
+                console.log("[1] Por Titulo");
+                console.log("[2] Por ID");
+                console.log("[0] Volver");
+                menuBuscar= await input("...");
+            }while(!menuBuscar||!["1","2","0"].includes(menuBuscar.trim()))
+            switch(menuBuscar){
+        case"1":
+            await this.buscarPorTitulo();
+                    break;
+        case"2":
+            await this.buscarPorID();
+                    break;
+                case"0":
+                    return;
+            }
+        },
+
+
     //Editar Tarea
         editarTarea: async function(){
             console.log("Para Editar una tarea ingrese el ID de la misma\n");

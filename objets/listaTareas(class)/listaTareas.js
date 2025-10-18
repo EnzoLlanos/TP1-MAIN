@@ -226,6 +226,7 @@ class listaTareas{
                 console.log("[1] Por Titulo");
                 console.log("[2] Por ID");
                 console.log("[0] Volver");
+                menuBuscar= await input("...");
             }while(!menuBuscar||!["1","2","0"].includes(menuBuscar.trim()))
             switch(menuBuscar){
                 case"1":
