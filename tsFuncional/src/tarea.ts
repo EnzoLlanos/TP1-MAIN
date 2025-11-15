@@ -1,14 +1,12 @@
-
-
 export class Tarea {
   
     constructor(  public id: number,
         public titulo: string,
         public descripcion: string,
         public estado: string,
-        public creacion: Date,
+        public creacion: string,
         public edicion: Date | null,
-        public vencimiento: Date,
+        public vencimiento: string,
         public dificultad: string
     ){}
 

@@ -1,9 +1,10 @@
 export {};
-// Importar las utilidades desde el módulo ESM
-// @ts-ignore
-import { input, close } from "../../lib/nodeImperativo.js"
-import * as readline from "readline-sync";
 import { ListaTareas } from "./listaTareas";
+import * as readline from "readline-sync";
+import { menuTareas, mostrarTareas, menuBuscarTarea, menuEditarTarea } from "./metodos";
+let arrayTareas = new ListaTareas([]);
+
+
 function mostrarMenu() {
   console.log("\n¡Hola Olivia!");
   console.log("¿Qué deseas hacer?");
@@ -14,37 +15,35 @@ function mostrarMenu() {
   console.log("[0] Salir.");
 }
 
-export function pedirTitulo(){
-    let titulo: string =readline.question("ingrese el titulo de la tarea")
-    return titulo;
-}
-
-
- function menu() {
-  let opcion;
+export function menu() {
+  let opcion: string;
   do {
     mostrarMenu();
-    opcion = readline.question("> ");
-
+    opcion = readline.question("> ").trim();
     switch (opcion) {
       case "1":
         console.log("👀 Ver mis tareas");
-        
+        mostrarTareas(arrayTareas);
         break;
 
       case "2":
         console.log("🔍 Buscar una Tarea");
-        
+        menuBuscarTarea(arrayTareas);
         break;
 
       case "3":
         console.log("➕ Agregar una Tarea");
-       
+        arrayTareas.lista=menuTareas(arrayTareas);
+        console.log("✅ Tarea agregada con éxito");
         break;
+
       case "4":
         console.log("✍ Editar una Tarea");
-        
+        let idEditar: number = readline.questionInt("Ingrese el ID de la tarea a editar: ");
+        arrayTareas.lista=menuEditarTarea(arrayTareas, idEditar);
+        console.log("✅ Tarea editada con éxito");
         break;
+
       case "0":
         console.log("👋 Saliendo del sistema...");
         break;
@@ -52,9 +51,7 @@ export function pedirTitulo(){
       default:
         console.log("Opción inválida. Por favor, ingrese una opción del menú.");
     }
-  } while (opcion !== "0");
-  close();
+  } while (opcion != "0");
+
 }
 
-// Ejecutar el programa
-menu();

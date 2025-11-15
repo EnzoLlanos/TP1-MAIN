@@ -10,10 +10,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/prompt-sync": "^4.2.3",
     "@types/readline-sync": "^1.4.8",
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "prompt-sync": "^4.2.0",
     "readline-sync": "^1.4.10"
   }
 }
